@@ -1,5 +1,12 @@
 import numpy as np
 import cv2 as cv
+from enum import Enum
+
+
+class REFLECTION_AXIS(Enum):
+    DOWN = [[-1, 0], [0, 1]]
+    LEFT = [[1, 0], [0, -1]]
+    RIGHT = [[-1, 0], [0, -1]]
 
 
 def rect(start: (int, int), end: (int, int)):
@@ -52,15 +59,25 @@ class polygon:
         self.points = np.array(self.points).astype(int) + np.array([x, y])
 
     def scale(self, scale_factor):
+        # calcula centro de massa
         c_x, c_y = np.mean(self.points, axis=0)
-        m_x, m_y = np.min(self.points, axis=0)
-        print(c_x, c_y)
         self.points = np.array([
+            # faz a multiplixação entre os eixos para a escala
             [
                 p_x * scale_factor,
                 p_y * scale_factor
             ]
             for p_x, p_y in self.points
         ]).astype(int)
-        self.translate(int(-c_x+m_x), int(-c_y+m_y))
+        # calcula novo centro de massa
+        m_x, m_y = np.mean(self.points, axis=0)
+        # move a forma multiplicada para o centro de massa antigo
+        self.translate(int(c_x - m_x), int(c_y - m_y))
 
+    def reflextion(self, axis: REFLECTION_AXIS):
+        nArr = np.array([
+            np.max(point, axis.value)
+            for point in self.points
+        ])
+
+        print(nArr)
