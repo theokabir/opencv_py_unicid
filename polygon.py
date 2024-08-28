@@ -16,15 +16,17 @@ def rect(start: (int, int), end: (int, int)):
         end,
         (end[0], start[1])
     ])
-    return polygon(new_square)
+    return Polygon(new_square)
 
 
-class polygon:
-    def __init__(self, points: np.array):
+class Polygon:
+    def __init__(self, points: np.array, color=(255, 255, 255), thickness=-1):
         self.points = points
+        self.color = color
+        self.thickness = thickness
 
-    def show(self, image: np.ndarray, color=(0, 255, 0), thickness=-1):
-        cv.drawContours(image, [self.points], -1, color, thickness)
+    def show(self, image: np.ndarray):
+        cv.drawContours(image, [self.points], -1, self.color, self.thickness)
 
     def rotate(self, angle_degrees):
         # Converte o ângulo de graus para radianos
