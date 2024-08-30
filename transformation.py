@@ -1,9 +1,7 @@
 import cv2
 import numpy as np
 from screenObjects import ScreenObjects
-
-SCREEN_WIDTH = 1500
-SCREEN_HEIGHT = 800
+from constants import *
 
 
 def cv_app(screenObjects: ScreenObjects):
@@ -15,6 +13,6 @@ def cv_app(screenObjects: ScreenObjects):
             form.show(img)
 
         k = cv2.waitKey(1) & 0xFF
-        if k == ord('q'):
+        if k == ord('q') or screenObjects.closed:
             cv2.destroyAllWindows()
             break

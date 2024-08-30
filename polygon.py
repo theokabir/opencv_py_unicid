@@ -1,6 +1,7 @@
 import numpy as np
 import cv2 as cv
 from enum import Enum
+from uuid import uuid4
 
 
 class REFLECTION_AXIS(Enum):
@@ -9,18 +10,29 @@ class REFLECTION_AXIS(Enum):
     RIGHT = [[-1, 0], [0, -1]]
 
 
-def rect(start: (int, int), end: (int, int)):
+def square(size: int):
     new_square = np.array([
-        start,
-        (start[0], end[1]),
-        end,
-        (end[0], start[1])
+        (0, 0),
+        (0, size),
+        (size, size),
+        (size, 0)
     ])
     return Polygon(new_square)
 
 
+def triangle(size: int):
+    height = int(size * np.sqrt(3) / 2)
+    new_triangle = np.array([
+        (int(size/2), 0),
+        (size, height),
+        (0, height)
+    ])
+    return Polygon(new_triangle)
+
+
 class Polygon:
     def __init__(self, points: np.array, color=(255, 255, 255), thickness=-1):
+        self.id = str(uuid4())
         self.points = points
         self.color = color
         self.thickness = thickness
