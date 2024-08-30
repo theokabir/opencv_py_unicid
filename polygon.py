@@ -21,13 +21,61 @@ def square(size: int):
 
 
 def triangle(size: int):
-    height = int(size * np.sqrt(3) / 2)
+    height = size * np.sqrt(3) / 2
     new_triangle = np.array([
-        (int(size/2), 0),
+        (size/2, 0),
         (size, height),
         (0, height)
-    ])
+    ]).astype(int)
     return Polygon(new_triangle)
+
+
+def arrow(size: int):
+    half_size = size*.5
+    size_1_4 = size*.25
+    size_3_4 = size*.75
+    new_arrow = np.array([
+        (size_1_4, 0),
+        (size_3_4, 0),
+        (size_3_4, half_size),
+        (size, half_size),
+        (half_size, size),
+        (0, half_size),
+        (size_1_4, half_size)
+    ]).astype(int)
+    return Polygon(new_arrow)
+
+
+def star(size: int):
+    cx, cy = int(size/2), int(size/2)  # Center of the star
+    height = size  # Height of the star
+
+    # Calculate the radius for the outer and inner points of the star
+    outer_radius = height / 2
+    inner_radius = outer_radius * 0.382  # Approximate ratio for a 5-pointed star
+
+    # Define the angles for the points
+    angles = np.deg2rad([90, 162, 234, 306, 18])
+
+    # Calculate the outer points
+    outer_points = np.array([
+        (cx + np.cos(angle) * outer_radius, cy - np.sin(angle) * outer_radius)
+        for angle in angles
+    ], dtype=np.int32)
+
+    # Calculate the inner points (offset by 36 degrees from the outer points)
+    inner_angles = angles + np.deg2rad(36)
+    inner_points = np.array([
+        (cx + np.cos(angle) * inner_radius, cy - np.sin(angle) * inner_radius)
+        for angle in inner_angles
+    ], dtype=np.int32)
+
+    # Interleave the outer and inner points to get the final star points
+    star_points = np.empty((10, 2), dtype=np.int32)
+    star_points[0::2] = outer_points
+    star_points[1::2] = inner_points
+
+    return Polygon(star_points)
 
 
 class Polygon:
@@ -46,7 +94,7 @@ class Polygon:
 
         # Calcula o centro de massa dos pontos
         center = np.mean(self.points, axis=0)
-        c_x, c_y = center
+        c_x, c_y = center.astype(int)
 
         # Cria a matriz de rotação
         cos_angle = np.cos(angle_radians)

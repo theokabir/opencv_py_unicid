@@ -13,10 +13,10 @@ class PolygonForm(Toplevel):
         # criar forma
         n_form = None
         match form:
-            case 'quadrado':
-                n_form = square(300)
-            case 'triangulo':
-                n_form = triangle(300)
+            case 'quadrado': n_form = square(300)
+            case 'triangulo': n_form = triangle(300)
+            case 'seta': n_form = arrow(300)
+            case 'estrela': n_form = star(300)
 
         if n_form is None:
             self.destroy()
@@ -29,16 +29,57 @@ class PolygonForm(Toplevel):
         # scale function
         scale_value = DoubleVar()
         scale_value.set(1)
-        scale_label = Label(self, text=f'{scale_value.get()}')
-        Scale(self, from_=-4.0, to=4.0,
+        Scale(self, from_=.1, to=4.0,
               resolution=0.1,
               variable=scale_value,
-              command=lambda x: scale_label.config(text=scale_value.get()),
-              orient=HORIZONTAL).pack()
-        scale_label.pack()
-        Button(self, text='scale',
-               command=lambda: screenObjects.polygons[screenObjects.getFormIndex(n_form.id)]
-               .scale(float(scale_value.get()))).pack()
+              orient=HORIZONTAL,
+              length=300).pack()
+
+        def scale():
+            n_form.scale(float(scale_value.get()))
+            scale_value.set(1)
+
+        Button(self, text='scale', command=scale).pack()
+
+        # translate
+        x_translate_value = IntVar()
+        x_translate_value.set(0)
+        y_translate_value = IntVar()
+        y_translate_value.set(0)
+
+        Scale(self, from_=-600, to=600,
+              resolution=1,
+              variable=x_translate_value,
+              orient=HORIZONTAL,
+              length=300).pack()
+
+        Scale(self, from_=-600, to=600,
+              resolution=1,
+              variable=y_translate_value,
+              orient=HORIZONTAL,
+              length=300).pack()
+
+        def transform():
+            n_form.translate(int(x_translate_value.get()), int(y_translate_value.get()))
+            x_translate_value.set(0)
+            y_translate_value.set(0)
+
+        Button(self, text='translate', command=transform).pack()
+
+        # rotate
+        rotate_value = IntVar()
+        rotate_value.set(0)
+        Scale(self, from_=-360, to=360,
+              resolution=1,
+              variable=rotate_value,
+              orient=HORIZONTAL,
+              length=300).pack()
+
+        def rotate():
+            n_form.rotate(rotate_value.get())
+            rotate_value.set(0)
+
+        Button(self, text='rotate', command=rotate).pack()
 
 
 def randColor():

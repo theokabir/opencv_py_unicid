@@ -1,5 +1,5 @@
 from threading import Thread
-from transformation import *
+from cv_window import *
 from screenObjects import ScreenObjects
 from mainForm import mainForm
 
