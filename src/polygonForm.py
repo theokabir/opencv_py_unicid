@@ -91,7 +91,7 @@ class PolygonForm(Toplevel):
         question_menu.pack()
 
         def mirror():
-            n_form.reflextion(value_inside.get())
+            n_form.reflection(value_inside.get())
 
         Button(self, text='reflect', command=mirror).pack()
 
