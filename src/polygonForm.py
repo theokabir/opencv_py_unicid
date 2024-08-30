@@ -96,7 +96,5 @@ class PolygonForm(Toplevel):
         Button(self, text='reflect', command=mirror).pack()
 
 
-
-
 def randColor():
     return randrange(100, 255), randrange(100, 255), randrange(100, 255)

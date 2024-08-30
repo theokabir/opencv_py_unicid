@@ -3,13 +3,13 @@ import cv2 as cv
 
 reflection_axis = {
     'X': [[-1, 0],
-             [0, 1]],
+          [0, 1]],
 
     'Y': [[1, 0],
-             [0, -1]],
+          [0, -1]],
 
     'Opposite': [[-1, 0],
-              [0, -1]]
+                 [0, -1]]
 }
 
 
@@ -151,7 +151,7 @@ class Polygon:
         # move a forma multiplicada para o centro de massa antigo
         self.translate(int(c_x - m_x), int(c_y - m_y))
 
-    def reflextion(self, axis: str):
+    def reflection(self, axis: str):
         c_x, c_y = np.mean(self.points, axis=0)
         axis_matrix = reflection_axis[axis]
         n_arr = np.array([
