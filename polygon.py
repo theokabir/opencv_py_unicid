@@ -80,7 +80,6 @@ def star(size: int):
 
 class Polygon:
     def __init__(self, points: np.array, color=(255, 255, 255), thickness=-1):
-        self.id = str(uuid4())
         self.points = points
         self.color = color
         self.thickness = thickness
