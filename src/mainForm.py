@@ -12,7 +12,7 @@ def mainForm(screenObject: ScreenObjects):
     value_inside = StringVar(root)
     value_inside.set("select an option")
 
-    values = ['quadrado', 'triangulo', 'seta', 'estrela']
+    values = ['quadrado', 'triangulo', 'seta', 'estrela', 'gama']
 
     question_menu = OptionMenu(root, value_inside, *values)
     question_menu.pack()

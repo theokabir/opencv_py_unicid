@@ -12,7 +12,7 @@ def cv_app(screenObjects: ScreenObjects):
             form.show(img)
 
         cv.imshow('image', img)
-        k = cv.waitKey(1) & 0xFF
+        k = cv.waitKey(1)
         if k == ord('q') or screenObjects.closed:
             cv.destroyAllWindows()
             break

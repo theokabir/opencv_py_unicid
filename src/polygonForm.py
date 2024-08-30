@@ -17,6 +17,7 @@ class PolygonForm(Toplevel):
             case 'triangulo': n_form = triangle(300)
             case 'seta': n_form = arrow(300)
             case 'estrela': n_form = star(300)
+            case 'gama': n_form = gama(300)
 
         if n_form is None:
             self.destroy()
@@ -80,6 +81,21 @@ class PolygonForm(Toplevel):
             rotate_value.set(0)
 
         Button(self, text='rotate', command=rotate).pack()
+
+        value_inside = StringVar(self)
+        value_inside.set("select an option")
+
+        values = ['X', 'Y', 'Opposite']
+
+        question_menu = OptionMenu(self, value_inside, *values)
+        question_menu.pack()
+
+        def mirror():
+            n_form.reflextion(value_inside.get())
+
+        Button(self, text='reflect', command=mirror).pack()
+
+
 
 
 def randColor():

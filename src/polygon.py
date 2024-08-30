@@ -1,13 +1,16 @@
 import numpy as np
 import cv2 as cv
-from enum import Enum
-from uuid import uuid4
 
+reflection_axis = {
+    'X': [[-1, 0],
+             [0, 1]],
 
-class REFLECTION_AXIS(Enum):
-    DOWN = [[-1, 0], [0, 1]]
-    LEFT = [[1, 0], [0, -1]]
-    RIGHT = [[-1, 0], [0, -1]]
+    'Y': [[1, 0],
+             [0, -1]],
+
+    'Opposite': [[-1, 0],
+              [0, -1]]
+}
 
 
 def square(size: int):
@@ -77,6 +80,20 @@ def star(size: int):
     return Polygon(star_points)
 
 
+def gama(size: int):
+    size_1_10 = size*.1
+
+    points = np.array([
+        (0, 0),
+        (size, 0),
+        (size, size_1_10),
+        (size_1_10, size_1_10),
+        (size_1_10, size),
+        (0, size),
+    ]).astype(int)
+    return Polygon(points)
+
+
 class Polygon:
     def __init__(self, points: np.array, color=(255, 255, 255), thickness=-1):
         self.points = points
@@ -134,10 +151,13 @@ class Polygon:
         # move a forma multiplicada para o centro de massa antigo
         self.translate(int(c_x - m_x), int(c_y - m_y))
 
-    def reflextion(self, axis: REFLECTION_AXIS):
-        nArr = np.array([
-            np.max(point, axis.value)
+    def reflextion(self, axis: str):
+        c_x, c_y = np.mean(self.points, axis=0)
+        axis_matrix = reflection_axis[axis]
+        n_arr = np.array([
+            np.matmul(axis_matrix, point)
             for point in self.points
         ])
-
-        print(nArr)
+        m_x, m_y = np.mean(n_arr, axis=0)
+        self.points = n_arr.astype(int)
+        self.translate(int(c_x - m_x), int(c_y - m_y))
