@@ -47,30 +47,29 @@ def arrow(size: int):
 
 
 def star(size: int):
-    cx, cy = int(size/2), int(size/2)  # Center of the star
-    height = size  # Height of the star
+    cx, cy = int(size/2), int(size/2)  # Calcula o centro da estrela
 
     # Calculate the radius for the outer and inner points of the star
-    outer_radius = height / 2
-    inner_radius = outer_radius * 0.382  # Approximate ratio for a 5-pointed star
+    outer_radius = size / 2
+    inner_radius = outer_radius * 0.382  # Calcula o raio dos pontos internos da estrela
 
-    # Define the angles for the points
+    # Define Ângulo dos pontos
     angles = np.deg2rad([90, 162, 234, 306, 18])
 
-    # Calculate the outer points
+    # calcula os pontos externos
     outer_points = np.array([
         (cx + np.cos(angle) * outer_radius, cy - np.sin(angle) * outer_radius)
         for angle in angles
     ], dtype=np.int32)
 
-    # Calculate the inner points (offset by 36 degrees from the outer points)
+    #  calcula os pontos internos girando em 36 graus referente aos pontos externos
     inner_angles = angles + np.deg2rad(36)
     inner_points = np.array([
         (cx + np.cos(angle) * inner_radius, cy - np.sin(angle) * inner_radius)
         for angle in inner_angles
     ], dtype=np.int32)
 
-    # Interleave the outer and inner points to get the final star points
+    # preenche o vetor com os pontos calculados a cima de forma intercalada
     star_points = np.empty((10, 2), dtype=np.int32)
     star_points[0::2] = outer_points
     star_points[1::2] = inner_points
